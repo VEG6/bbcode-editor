@@ -295,7 +295,17 @@ function ytId(url) { const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\
 function rep(h, re, fn) { let p; do { p = h; h = h.replace(re, fn); } while (h !== p); return h; }
 
 function bbToHTML(raw) {
-  let h = esc(raw);
+  // Extract [code] blocks BEFORE escaping so their contents are shown literally
+  const codePlaceholders = [];
+  let extracted = raw.replace(/\[code\]([\s\S]*?)\[\/code\]/gi, (_, content) => {
+    const idx = codePlaceholders.length;
+    codePlaceholders.push(content);
+    return `\x00CODE${idx}\x00`;
+  });
+
+  let h = esc(extracted);
+
+  // NOTE: code placeholders restored AFTER all rules below
 
   const rules = [
     [/\[b\]([\s\S]*?)\[\/b\]/gi, '<strong>$1</strong>'],
@@ -317,7 +327,6 @@ function bbToHTML(raw) {
     [/\[success\]([\s\S]*?)\[\/success\]/gi, '<div class="bb-success">$1</div>'],
     [/\[marquee\]([\s\S]*?)\[\/marquee\]/gi, '<div class="bb-marquee"><span>$1</span></div>'],
     [/\[hr\]/gi, '<hr>'],
-    [/\[code\]([\s\S]*?)\[\/code\]/gi, '<pre><code>$1</code></pre>'],
   ];
   rules.forEach(([re, fn]) => { h = rep(h, re, fn); });
 
@@ -376,6 +385,11 @@ function bbToHTML(raw) {
 
   // Newlines last
   h = h.replace(/\n/g, '<br>');
+
+  // Restore [code] blocks LAST — after all other rules, so their content is never parsed
+  h = h.replace(/\x00CODE(\d+)\x00/g, (_, idx) =>
+    `<pre><code>${esc(codePlaceholders[parseInt(idx)])}</code></pre>`);
+
   return h;
 }
 
