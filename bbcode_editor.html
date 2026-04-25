@@ -3,12 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBCode Редактор</title>
+<title>BBCode Editor / Редактор</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; display: flex; justify-content: center; }
 .wrap { background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 20px; width: 100%; max-width: 1100px; }
-h2 { font-size: 20px; font-weight: 600; color: #333; margin-bottom: 1rem; }
+.header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px; }
+h2 { font-size: 20px; font-weight: 600; color: #333; }
+.lang-switcher { display: flex; gap: 6px; }
+.lang-btn { padding: 5px 14px; font-size: 13px; border: 1px solid #ccc; background: #eee; color: #333; border-radius: 20px; cursor: pointer; font-weight: 500; transition: all 0.15s; }
+.lang-btn:hover { background: #ddd; }
+.lang-btn.active { background: #2255aa; color: #fff; border-color: #2255aa; }
 .toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; align-items: center; }
 .tb-group { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
 .tb-sep { width: 1px; background: #ccc; margin: 0 4px; align-self: stretch; min-height: 24px; }
@@ -54,100 +59,189 @@ h2 { font-size: 20px; font-weight: 600; color: #333; margin-bottom: 1rem; }
 </head>
 <body>
 <div class="wrap">
-<h2>BBCode Редактор</h2>
 
-<div class="toolbar">
-  <div class="tb-group">
-    <span class="tb-label">Текст</span>
-    <button class="tb-btn" onclick="ins('[b]','[/b]')" style="font-weight:700;">B</button>
-    <button class="tb-btn" onclick="ins('[i]','[/i]')" style="font-style:italic;">I</button>
-    <button class="tb-btn" onclick="ins('[u]','[/u]')" style="text-decoration:underline;">U</button>
-    <button class="tb-btn" onclick="ins('[s]','[/s]')" style="text-decoration:line-through;">S</button>
-    <button class="tb-btn" onclick="ins('[sub]','[/sub]')">x₂</button>
-    <button class="tb-btn" onclick="ins('[sup]','[/sup]')">x²</button>
+  <div class="header">
+    <h2 id="title">BBCode Редактор</h2>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('bg')">🇧🇬 БГ</button>
+      <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    </div>
   </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Размер</span>
-    <button class="tb-btn" onclick="ins('[size=10]','[/size]')">xs</button>
-    <button class="tb-btn" onclick="ins('[size=14]','[/size]')">sm</button>
-    <button class="tb-btn" onclick="ins('[size=18]','[/size]')">lg</button>
-    <button class="tb-btn" onclick="ins('[size=24]','[/size]')">xl</button>
-  </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Цвят</span>
-    <button class="tb-btn" onclick="ins('[color=red]','[/color]')" style="color:red;">A</button>
-    <button class="tb-btn" onclick="ins('[color=blue]','[/color]')" style="color:#2255aa;">A</button>
-    <button class="tb-btn" onclick="ins('[color=green]','[/color]')" style="color:green;">A</button>
-    <button class="tb-btn" onclick="promptColor()">+цвят</button>
-  </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Подравн.</span>
-    <button class="tb-btn" onclick="ins('[left]','[/left]')">◀</button>
-    <button class="tb-btn" onclick="ins('[center]','[/center]')">▬</button>
-    <button class="tb-btn" onclick="ins('[right]','[/right]')">▶</button>
-    <button class="tb-btn" onclick="ins('[justify]','[/justify]')">≡</button>
-  </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Списъци</span>
-    <button class="tb-btn" onclick="ins('[list]\n[*] ','[/list]')">• list</button>
-    <button class="tb-btn" onclick="ins('[list=1]\n[*] ','[/list]')">1. list</button>
-    <button class="tb-btn" onclick="ins('[list=a]\n[*] ','[/list]')">a. list</button>
-    <button class="tb-btn" onclick="ins('[*] ','')">• точка</button>
-  </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Таблица</span>
-    <button class="tb-btn" onclick="insertTable()">таблица</button>
-    <button class="tb-btn" onclick="ins('[th]','[/th]')">th</button>
-    <button class="tb-btn" onclick="ins('[td]','[/td]')">td</button>
-    <button class="tb-btn" onclick="ins('[tr]','[/tr]')">tr</button>
-  </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Медия</span>
-    <button class="tb-btn" onclick="ins('[url=https://]','[/url]')">🔗 линк</button>
-    <button class="tb-btn" onclick="ins('[img]','[/img]')">🖼 снимка</button>
-    <button class="tb-btn" onclick="promptImg()">🖼 размер</button>
-    <button class="tb-btn" onclick="ins('[youtube]','[/youtube]')">▶ youtube</button>
-  </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Блокове</span>
-    <button class="tb-btn" onclick="promptQuote()">цитат</button>
-    <button class="tb-btn" onclick="ins('[code]','[/code]')">код</button>
-    <button class="tb-btn" onclick="ins('[spoiler]','[/spoiler]')">spoiler</button>
-    <button class="tb-btn" onclick="ins('[hr]','')">━ линия</button>
-  </div>
-  <div class="tb-sep"></div>
-  <div class="tb-group">
-    <span class="tb-label">Специални</span>
-    <button class="tb-btn" onclick="ins('[highlight]','[/highlight]')" style="background:#fff176;color:#333;">highlight</button>
-    <button class="tb-btn" onclick="ins('[box]','[/box]')">box</button>
-    <button class="tb-btn" onclick="ins('[warning]','[/warning]')" style="color:#856404;">⚠ warning</button>
-    <button class="tb-btn" onclick="ins('[success]','[/success]')" style="color:#1a7a3a;">✔ success</button>
-    <button class="tb-btn" onclick="ins('[marquee]','[/marquee]')">marquee</button>
-    <button class="tb-btn" onclick="promptProgress()">progress</button>
-    <button class="tb-btn" onclick="ins('[font=Arial]','[/font]')">font</button>
-  </div>
-</div>
 
-<div class="panels">
-  <div class="panel">
-    <label for="bbInput">Въвеждане (BBCode):</label>
-    <textarea id="bbInput" placeholder="Напишете BBCode тук..."></textarea>
+  <div class="toolbar">
+    <div class="tb-group">
+      <span class="tb-label" data-i="text"></span>
+      <button class="tb-btn" onclick="ins('[b]','[/b]')" style="font-weight:700;">B</button>
+      <button class="tb-btn" onclick="ins('[i]','[/i]')" style="font-style:italic;">I</button>
+      <button class="tb-btn" onclick="ins('[u]','[/u]')" style="text-decoration:underline;">U</button>
+      <button class="tb-btn" onclick="ins('[s]','[/s]')" style="text-decoration:line-through;">S</button>
+      <button class="tb-btn" onclick="ins('[sub]','[/sub]')">x₂</button>
+      <button class="tb-btn" onclick="ins('[sup]','[/sup]')">x²</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="size"></span>
+      <button class="tb-btn" onclick="ins('[size=10]','[/size]')">xs</button>
+      <button class="tb-btn" onclick="ins('[size=14]','[/size]')">sm</button>
+      <button class="tb-btn" onclick="ins('[size=18]','[/size]')">lg</button>
+      <button class="tb-btn" onclick="ins('[size=24]','[/size]')">xl</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="color"></span>
+      <button class="tb-btn" onclick="ins('[color=red]','[/color]')" style="color:red;">A</button>
+      <button class="tb-btn" onclick="ins('[color=blue]','[/color]')" style="color:#2255aa;">A</button>
+      <button class="tb-btn" onclick="ins('[color=green]','[/color]')" style="color:green;">A</button>
+      <button class="tb-btn" onclick="promptColor()" data-i="colorBtn"></button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="align"></span>
+      <button class="tb-btn" onclick="ins('[left]','[/left]')">◀</button>
+      <button class="tb-btn" onclick="ins('[center]','[/center]')">▬</button>
+      <button class="tb-btn" onclick="ins('[right]','[/right]')">▶</button>
+      <button class="tb-btn" onclick="ins('[justify]','[/justify]')">≡</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="lists"></span>
+      <button class="tb-btn" onclick="ins('[list]\n[*] ','[/list]')">• list</button>
+      <button class="tb-btn" onclick="ins('[list=1]\n[*] ','[/list]')">1. list</button>
+      <button class="tb-btn" onclick="ins('[list=a]\n[*] ','[/list]')">a. list</button>
+      <button class="tb-btn" onclick="ins('[*] ','')">• <span data-i="item"></span></button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="table"></span>
+      <button class="tb-btn" onclick="insertTable()" data-i="tableBtn"></button>
+      <button class="tb-btn" onclick="ins('[th]','[/th]')">th</button>
+      <button class="tb-btn" onclick="ins('[td]','[/td]')">td</button>
+      <button class="tb-btn" onclick="ins('[tr]','[/tr]')">tr</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="media"></span>
+      <button class="tb-btn" onclick="ins('[url=https://]','[/url]')">🔗 <span data-i="link"></span></button>
+      <button class="tb-btn" onclick="ins('[img]','[/img]')">🖼 <span data-i="img"></span></button>
+      <button class="tb-btn" onclick="promptImg()">🖼 <span data-i="imgSize"></span></button>
+      <button class="tb-btn" onclick="ins('[youtube]','[/youtube]')">▶ youtube</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="blocks"></span>
+      <button class="tb-btn" onclick="promptQuote()" data-i="quote"></button>
+      <button class="tb-btn" onclick="ins('[code]','[/code]')" data-i="code"></button>
+      <button class="tb-btn" onclick="ins('[spoiler]','[/spoiler]')">spoiler</button>
+      <button class="tb-btn" onclick="ins('[hr]','')">━ <span data-i="line"></span></button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <span class="tb-label" data-i="special"></span>
+      <button class="tb-btn" onclick="ins('[highlight]','[/highlight]')" style="background:#fff176;color:#333;">highlight</button>
+      <button class="tb-btn" onclick="ins('[box]','[/box]')">box</button>
+      <button class="tb-btn" onclick="ins('[warning]','[/warning]')" style="color:#856404;">⚠ warning</button>
+      <button class="tb-btn" onclick="ins('[success]','[/success]')" style="color:#1a7a3a;">✔ success</button>
+      <button class="tb-btn" onclick="ins('[marquee]','[/marquee]')">marquee</button>
+      <button class="tb-btn" onclick="promptProgress()">progress</button>
+      <button class="tb-btn" onclick="ins('[font=Arial]','[/font]')">font</button>
+    </div>
   </div>
-  <div class="panel">
-    <label>Преглед в реално време:</label>
-    <div id="preview" class="preview-box"></div>
+
+  <div class="panels">
+    <div class="panel">
+      <label for="bbInput" id="labelInput">Въвеждане (BBCode):</label>
+      <textarea id="bbInput" placeholder="Напишете BBCode тук..."></textarea>
+    </div>
+    <div class="panel">
+      <label id="labelPreview">Преглед в реално време:</label>
+      <div id="preview" class="preview-box"></div>
+    </div>
   </div>
-</div>
+
 </div>
 
 <script>
+/* ── i18n ── */
+const i18n = {
+  bg: {
+    title: 'BBCode Редактор',
+    text: 'Текст', size: 'Размер', color: 'Цвят', colorBtn: '+цвят',
+    align: 'Подравн.', lists: 'Списъци', item: 'точка',
+    table: 'Таблица', tableBtn: 'таблица',
+    media: 'Медия', link: 'линк', img: 'снимка', imgSize: 'размер',
+    blocks: 'Блокове', quote: 'цитат', code: 'код', line: 'линия',
+    special: 'Специални',
+    labelInput: 'Въвеждане (BBCode):',
+    labelPreview: 'Преглед в реално време:',
+    placeholder: 'Напишете BBCode тук...',
+    promptColor: 'Цвят (напр. #ff6600 или orange):',
+    promptQuoteAuthor: 'Автор на цитата (или остави празно):',
+    promptImgW: 'Ширина (px):',
+    promptImgH: 'Височина (px — или остави празно за auto):',
+    promptPct: 'Процент (0-100):',
+    promptRows: 'Брой редове:',
+    promptCols: 'Брой колони:',
+    thLabel: 'Заглавие',
+    tdLabel: 'Клетка',
+    spoilerShow: 'Покажи spoiler',
+    spoilerHide: 'Скрий',
+    quotedBy: 'написа:',
+  },
+  en: {
+    title: 'BBCode Editor',
+    text: 'Text', size: 'Size', color: 'Color', colorBtn: '+color',
+    align: 'Align', lists: 'Lists', item: 'item',
+    table: 'Table', tableBtn: 'table',
+    media: 'Media', link: 'link', img: 'image', imgSize: 'size',
+    blocks: 'Blocks', quote: 'quote', code: 'code', line: 'line',
+    special: 'Special',
+    labelInput: 'Input (BBCode):',
+    labelPreview: 'Live Preview:',
+    placeholder: 'Type your BBCode here...',
+    promptColor: 'Color (e.g. #ff6600 or orange):',
+    promptQuoteAuthor: 'Quote author (or leave blank):',
+    promptImgW: 'Width (px):',
+    promptImgH: 'Height (px — or leave blank for auto):',
+    promptPct: 'Percentage (0-100):',
+    promptRows: 'Number of rows:',
+    promptCols: 'Number of columns:',
+    thLabel: 'Header',
+    tdLabel: 'Cell',
+    spoilerShow: 'Show spoiler',
+    spoilerHide: 'Hide',
+    quotedBy: 'wrote:',
+  }
+};
+
+let lang = 'bg';
+let T = i18n[lang];
+
+function setLang(l) {
+  lang = l;
+  T = i18n[l];
+  document.documentElement.lang = l;
+  document.title = T.title;
+
+  // Update lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(l === 'bg' ? 'БГ' : 'EN'));
+  });
+
+  // Update all data-i elements
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const key = el.getAttribute('data-i');
+    if (T[key] !== undefined) el.textContent = T[key];
+  });
+
+  document.getElementById('title').textContent = T.title;
+  document.getElementById('labelInput').textContent = T.labelInput;
+  document.getElementById('labelPreview').textContent = T.labelPreview;
+  document.getElementById('bbInput').placeholder = T.placeholder;
+
+  update();
+}
+
+/* ── Editor ── */
 const inp = document.getElementById('bbInput');
 const prev = document.getElementById('preview');
 
@@ -159,29 +253,43 @@ function ins(open, close) {
   inp.focus(); update();
 }
 
-function promptColor() { const c = prompt('Цвят (напр. #ff6600 или orange):'); if (c) ins('[color='+c+']','[/color]'); }
-function promptQuote() { const a = prompt('Автор на цитата (или остави празно):'); if (a===null) return; ins(a?'[quote='+a+']':'[quote]','[/quote]'); }
+function promptColor() {
+  const c = prompt(T.promptColor);
+  if (c) ins('[color='+c+']','[/color]');
+}
+function promptQuote() {
+  const a = prompt(T.promptQuoteAuthor);
+  if (a === null) return;
+  ins(a ? '[quote='+a+']' : '[quote]', '[/quote]');
+}
 function promptImg() {
-  const w = prompt('Ширина (px):', '400');
+  const w = prompt(T.promptImgW, '400');
   if (!w) return;
-  const h = prompt('Височина (px — или остави празно за auto):', '');
+  const h = prompt(T.promptImgH, '');
   ins(h ? '[img='+w+'x'+h+']' : '[img='+w+']', '[/img]');
 }
-function promptProgress() { const v = prompt('Процент (0-100):', '50') || '50'; ins('[progress='+v+']','[/progress]'); }
+function promptProgress() {
+  const v = prompt(T.promptPct, '50') || '50';
+  ins('[progress='+v+']','[/progress]');
+}
 function insertTable() {
-  const rows = parseInt(prompt('Брой редове:', '2') || 2);
-  const cols = parseInt(prompt('Брой колони:', '2') || 2);
+  const rows = parseInt(prompt(T.promptRows, '2') || 2);
+  const cols = parseInt(prompt(T.promptCols, '2') || 2);
   if (!rows || !cols) return;
   let t = '[table]\n[tr]';
-  for (let c = 0; c < cols; c++) t += '[th]Заглавие '+(c+1)+'[/th]';
+  for (let c = 0; c < cols; c++) t += '[th]'+T.thLabel+' '+(c+1)+'[/th]';
   t += '[/tr]\n';
-  for (let r = 0; r < rows; r++) { t += '[tr]'; for (let c = 0; c < cols; c++) t += '[td]Клетка[/td]'; t += '[/tr]\n'; }
+  for (let r = 0; r < rows; r++) {
+    t += '[tr]';
+    for (let c = 0; c < cols; c++) t += '[td]'+T.tdLabel+'[/td]';
+    t += '[/tr]\n';
+  }
   t += '[/table]';
   ins(t, '');
 }
 
+/* ── Parser ── */
 let spN = 0;
-
 function esc(s) { const d = document.createElement('div'); d.innerText = s; return d.innerHTML; }
 function ytId(url) { const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/); return m ? m[1] : url.trim(); }
 function rep(h, re, fn) { let p; do { p = h; h = h.replace(re, fn); } while (h !== p); return h; }
@@ -213,7 +321,7 @@ function bbToHTML(raw) {
   ];
   rules.forEach(([re, fn]) => { h = rep(h, re, fn); });
 
-  // Images — support [img=WxH], [img=W], [img]
+  // Images — [img=WxH], [img=W], [img]
   h = rep(h, /\[img=(\d+)x(\d+)\]([\s\S]*?)\[\/img\]/gi,
     (_, w, ht, src) => `<img src="${src.trim()}" style="width:${w}px;max-width:100%;height:auto;" alt="">`);
   h = rep(h, /\[img=(\d+)\]([\s\S]*?)\[\/img\]/gi,
@@ -232,18 +340,16 @@ function bbToHTML(raw) {
     return `<div class="bb-progress-wrap"><div class="bb-progress-bar" style="width:${p}%">${p}%${lbl ? ' — ' + lbl : ''}</div></div>`;
   });
 
-  // Tables — must come BEFORE spoilers/quotes so nested tags are still raw BBCode
+  // Tables — before spoilers/quotes; strip internal newlines
   h = rep(h, /\[table\]([\s\S]*?)\[\/table\]/gi, (_, body) => {
-    let t = body;
-    // Strip newlines inside table so they don't become <br> later
-    t = t.replace(/\n/g, '');
+    let t = body.replace(/\n/g, '');
     t = t.replace(/\[tr\]([\s\S]*?)\[\/tr\]/gi, '<tr>$1</tr>');
     t = t.replace(/\[th\]([\s\S]*?)\[\/th\]/gi, '<th>$1</th>');
     t = t.replace(/\[td\]([\s\S]*?)\[\/td\]/gi, '<td>$1</td>');
     return '<table>' + t + '</table>';
   });
 
-  // Lists — also before spoilers
+  // Lists — before spoilers
   h = h.replace(/\[list(?:=(\w+))?\]([\s\S]*?)\[\/list\]/gi, (_, type, items) => {
     const isOrdered = type==='1'||type==='a'||type==='i'||type==='I'||type==='A';
     const tag = isOrdered ? 'ol' : 'ul';
@@ -254,27 +360,30 @@ function bbToHTML(raw) {
 
   // Quotes
   h = h.replace(/\[quote=([^\]]+)\]([\s\S]*?)\[\/quote\]/gi,
-    (_, a, c) => `<blockquote><strong>${esc(a)}</strong> написа:<br>${c}</blockquote>`);
+    (_, a, c) => `<blockquote><strong>${esc(a)}</strong> ${T.quotedBy}<br>${c}</blockquote>`);
   h = rep(h, /\[quote\]([\s\S]*?)\[\/quote\]/gi, '<blockquote>$1</blockquote>');
 
   // Spoilers
   h = h.replace(/\[spoiler(?:=([^\]]*))?\]([\s\S]*?)\[\/spoiler\]/gi, (_, title, content) => {
-    const lbl = title ? esc(title) : 'Покажи spoiler';
-    return `<div style="margin:6px 0"><button class="bb-spoiler-btn" onclick="var b=this.nextElementSibling;b.classList.toggle('open');this.textContent=b.classList.contains('open')?'Скрий':'${lbl}'">${lbl}</button><div class="bb-spoiler-body">${content}</div></div>`;
+    const lbl = title ? esc(title) : T.spoilerShow;
+    const hide = T.spoilerHide;
+    return `<div style="margin:6px 0"><button class="bb-spoiler-btn" onclick="var b=this.nextElementSibling;b.classList.toggle('open');this.textContent=b.classList.contains('open')?'${hide}':'${lbl}'">${lbl}</button><div class="bb-spoiler-body">${content}</div></div>`;
   });
 
   // YouTube
   h = h.replace(/\[youtube\]([\s\S]*?)\[\/youtube\]/gi, (_, url) =>
     `<iframe class="bb-yt" src="https://www.youtube.com/embed/${ytId(url)}" allowfullscreen></iframe>`);
 
-  // Newlines to <br> — last, after all block elements are already HTML
+  // Newlines last
   h = h.replace(/\n/g, '<br>');
   return h;
 }
 
 function update() { spN = 0; prev.innerHTML = bbToHTML(inp.value); }
 inp.addEventListener('input', update);
-update();
+
+// Init
+setLang('en');
 </script>
 </body>
 </html>
