@@ -13,44 +13,21 @@ h2 { font-size: 20px; font-weight: 600; color: #333; margin-bottom: 1rem; }
 .tb-group { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
 .tb-sep { width: 1px; background: #ccc; margin: 0 4px; align-self: stretch; min-height: 24px; }
 .tb-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.05em; }
-.tb-btn {
-  padding: 5px 10px; font-size: 13px;
-  border: 1px solid #ccc; background: #eee; color: #333;
-  border-radius: 4px; cursor: pointer; line-height: 1.4;
-}
+.tb-btn { padding: 5px 10px; font-size: 13px; border: 1px solid #ccc; background: #eee; color: #333; border-radius: 4px; cursor: pointer; line-height: 1.4; }
 .tb-btn:hover { background: #ddd; }
 .panels { display: flex; gap: 16px; }
 @media (max-width: 700px) { .panels { flex-direction: column; } }
 .panel { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .panel label { font-size: 13px; font-weight: 600; color: #555; }
-#bbInput {
-  width: 100%; height: 400px; padding: 10px; resize: vertical;
-  border: 1px solid #ccc; border-radius: 4px;
-  background: #fff; color: #333;
-  font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6;
-}
-.preview-box {
-  width: 100%; height: 400px; padding: 12px; overflow-y: auto;
-  border: 1px solid #ccc; border-radius: 4px;
-  background: #fafafa; color: #333;
-  font-size: 14px; line-height: 1.6;
-}
+#bbInput { width: 100%; height: 400px; padding: 10px; resize: vertical; border: 1px solid #ccc; border-radius: 4px; background: #fff; color: #333; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; }
+.preview-box { width: 100%; height: 400px; padding: 12px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; color: #333; font-size: 14px; line-height: 1.6; }
 
 /* Preview styles */
-.preview-box blockquote {
-  border-left: 4px solid #4a90d9; margin: 8px 0;
-  padding: 8px 12px; background: #eef4fb;
-  border-radius: 0 4px 4px 0; font-style: italic;
-}
-.preview-box pre {
-  background: #f0f0f0; color: #333;
-  border: 1px solid #ddd; padding: 10px;
-  border-radius: 4px; overflow-x: auto;
-  font-family: 'Courier New', monospace; font-size: 13px; margin: 6px 0;
-}
+.preview-box blockquote { border-left: 4px solid #4a90d9; margin: 8px 0; padding: 8px 12px; background: #eef4fb; border-radius: 0 4px 4px 0; font-style: italic; }
+.preview-box pre { background: #f0f0f0; color: #333; border: 1px solid #ddd; padding: 10px; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 13px; margin: 6px 0; }
 .preview-box img { max-width: 100%; height: auto; border-radius: 4px; }
 .preview-box table { border-collapse: collapse; width: 100%; margin: 8px 0; }
-.preview-box td, .preview-box th { border: 1px solid #ccc; padding: 6px 10px; }
+.preview-box td, .preview-box th { border: 1px solid #ccc; padding: 6px 10px; vertical-align: top; }
 .preview-box th { background: #f0f0f0; font-weight: 600; }
 .preview-box ul, .preview-box ol { padding-left: 1.5rem; margin: 6px 0; }
 .preview-box hr { border: none; border-top: 1px solid #ccc; margin: 10px 0; }
@@ -60,28 +37,17 @@ h2 { font-size: 20px; font-weight: 600; color: #333; margin-bottom: 1rem; }
 .preview-box .bb-right { text-align: right; }
 .preview-box .bb-justify { text-align: justify; }
 .preview-box .bb-yt { aspect-ratio: 16/9; width: 100%; border: none; border-radius: 4px; display: block; margin: 8px 0; }
-
-.preview-box .bb-spoiler-btn {
-  font-size: 12px; padding: 3px 12px; cursor: pointer;
-  border: 1px solid #ccc; background: #eee; color: #555;
-  border-radius: 4px;
-}
+.preview-box .bb-spoiler-btn { font-size: 12px; padding: 3px 12px; cursor: pointer; border: 1px solid #ccc; background: #eee; color: #555; border-radius: 4px; }
 .preview-box .bb-spoiler-btn:hover { background: #ddd; }
-.preview-box .bb-spoiler-body {
-  display: none; margin-top: 6px; padding: 8px;
-  background: #fff; border-radius: 4px; border: 1px solid #ddd;
-}
+.preview-box .bb-spoiler-body { display: none; margin-top: 6px; padding: 8px; background: #fff; border-radius: 4px; border: 1px solid #ddd; }
 .preview-box .bb-spoiler-body.open { display: block; }
-
 .preview-box .bb-highlight { background: #fff176; color: #333; padding: 0 3px; border-radius: 3px; }
 .preview-box .bb-box { border: 1px solid #ccc; border-radius: 4px; padding: 10px 14px; margin: 8px 0; background: #fff; }
 .preview-box .bb-warning { border-left: 4px solid #f0ad4e; border-radius: 0 4px 4px 0; background: #fff8e1; color: #856404; padding: 8px 12px; margin: 8px 0; }
 .preview-box .bb-success { border-left: 4px solid #5cb85c; border-radius: 0 4px 4px 0; background: #eafaf1; color: #1a7a3a; padding: 8px 12px; margin: 8px 0; }
-
 .preview-box .bb-marquee { display: block; overflow: hidden; white-space: nowrap; margin: 6px 0; }
 .preview-box .bb-marquee span { display: inline-block; animation: bbmarquee 8s linear infinite; }
 @keyframes bbmarquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-
 .preview-box .bb-progress-wrap { background: #e9ecef; border: 1px solid #ccc; border-radius: 999px; height: 22px; overflow: hidden; margin: 8px 0; }
 .preview-box .bb-progress-bar { height: 100%; background: #4a90d9; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; transition: width 0.4s; min-width: 2rem; }
 </style>
@@ -189,61 +155,36 @@ function ins(open, close) {
   const s = inp.selectionStart, e = inp.selectionEnd;
   const sel = inp.value.substring(s, e);
   inp.value = inp.value.substring(0, s) + open + sel + close + inp.value.substring(e);
-  const pos = s === e ? s + open.length : s + open.length + sel.length + close.length;
-  inp.selectionStart = inp.selectionEnd = pos;
+  inp.selectionStart = inp.selectionEnd = s === e ? s + open.length : s + open.length + sel.length + close.length;
   inp.focus(); update();
 }
 
-function promptColor() {
-  const c = prompt('Въведи цвят (напр. #ff6600 или orange):');
-  if (c) ins('[color=' + c + ']', '[/color]');
-}
-function promptQuote() {
-  const a = prompt('Автор на цитата (или остави празно):');
-  if (a === null) return;
-  ins(a ? '[quote=' + a + ']' : '[quote]', '[/quote]');
-}
+function promptColor() { const c = prompt('Цвят (напр. #ff6600 или orange):'); if (c) ins('[color='+c+']','[/color]'); }
+function promptQuote() { const a = prompt('Автор на цитата (или остави празно):'); if (a===null) return; ins(a?'[quote='+a+']':'[quote]','[/quote]'); }
 function promptImg() {
-  const w = prompt('Ширина (px):') || '200';
-  const h = prompt('Височина (px):') || '150';
-  ins('[img=' + w + 'x' + h + ']', '[/img]');
+  const w = prompt('Ширина (px):', '400');
+  if (!w) return;
+  const h = prompt('Височина (px — или остави празно за auto):', '');
+  ins(h ? '[img='+w+'x'+h+']' : '[img='+w+']', '[/img]');
 }
-function promptProgress() {
-  const v = prompt('Процент (0-100):', '50') || '50';
-  ins('[progress=' + v + ']', '[/progress]');
-}
+function promptProgress() { const v = prompt('Процент (0-100):', '50') || '50'; ins('[progress='+v+']','[/progress]'); }
 function insertTable() {
-  const rows = parseInt(prompt('Брой редове:') || '2');
-  const cols = parseInt(prompt('Брой колони:') || '2');
+  const rows = parseInt(prompt('Брой редове:', '2') || 2);
+  const cols = parseInt(prompt('Брой колони:', '2') || 2);
   if (!rows || !cols) return;
   let t = '[table]\n[tr]';
-  for (let c = 0; c < cols; c++) t += '[th]Заглавие ' + (c+1) + '[/th]';
+  for (let c = 0; c < cols; c++) t += '[th]Заглавие '+(c+1)+'[/th]';
   t += '[/tr]\n';
-  for (let r = 0; r < rows; r++) {
-    t += '[tr]';
-    for (let c = 0; c < cols; c++) t += '[td]Клетка[/td]';
-    t += '[/tr]\n';
-  }
+  for (let r = 0; r < rows; r++) { t += '[tr]'; for (let c = 0; c < cols; c++) t += '[td]Клетка[/td]'; t += '[/tr]\n'; }
   t += '[/table]';
   ins(t, '');
 }
 
 let spN = 0;
 
-function esc(s) {
-  const d = document.createElement('div'); d.innerText = s; return d.innerHTML;
-}
-
-function ytId(url) {
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
-  return m ? m[1] : url.trim();
-}
-
-function applyRepeat(h, re, rep) {
-  let p;
-  do { p = h; h = h.replace(re, rep); } while (h !== p);
-  return h;
-}
+function esc(s) { const d = document.createElement('div'); d.innerText = s; return d.innerHTML; }
+function ytId(url) { const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/); return m ? m[1] : url.trim(); }
+function rep(h, re, fn) { let p; do { p = h; h = h.replace(re, fn); } while (h !== p); return h; }
 
 function bbToHTML(raw) {
   let h = esc(raw);
@@ -262,41 +203,51 @@ function bbToHTML(raw) {
     [/\[center\]([\s\S]*?)\[\/center\]/gi, '<div class="bb-center">$1</div>'],
     [/\[right\]([\s\S]*?)\[\/right\]/gi, '<div class="bb-right">$1</div>'],
     [/\[justify\]([\s\S]*?)\[\/justify\]/gi, '<div class="bb-justify">$1</div>'],
-    [/\[url=([^\]]+)\]([\s\S]*?)\[\/url\]/gi, '<a href="$1" target="_blank">$2</a>'],
-    [/\[url\]([\s\S]*?)\[\/url\]/gi, '<a href="$1" target="_blank">$1</a>'],
-    [/\[img=(\d+)x(\d+)\]([\s\S]*?)\[\/img\]/gi, '<img src="$3" width="$1" height="$2" alt="">'],
-    [/\[img\]([\s\S]*?)\[\/img\]/gi, '<img src="$1" alt="">'],
-    [/\[hr\]/gi, '<hr>'],
-    [/\[code\]([\s\S]*?)\[\/code\]/gi, '<pre><code>$1</code></pre>'],
     [/\[highlight\]([\s\S]*?)\[\/highlight\]/gi, '<span class="bb-highlight">$1</span>'],
     [/\[box\]([\s\S]*?)\[\/box\]/gi, '<div class="bb-box">$1</div>'],
     [/\[warning\]([\s\S]*?)\[\/warning\]/gi, '<div class="bb-warning">$1</div>'],
     [/\[success\]([\s\S]*?)\[\/success\]/gi, '<div class="bb-success">$1</div>'],
     [/\[marquee\]([\s\S]*?)\[\/marquee\]/gi, '<div class="bb-marquee"><span>$1</span></div>'],
+    [/\[hr\]/gi, '<hr>'],
+    [/\[code\]([\s\S]*?)\[\/code\]/gi, '<pre><code>$1</code></pre>'],
   ];
+  rules.forEach(([re, fn]) => { h = rep(h, re, fn); });
 
-  rules.forEach(([re, rep]) => { h = applyRepeat(h, re, rep); });
+  // Images — support [img=WxH], [img=W], [img]
+  h = rep(h, /\[img=(\d+)x(\d+)\]([\s\S]*?)\[\/img\]/gi,
+    (_, w, ht, src) => `<img src="${src.trim()}" style="width:${w}px;max-width:100%;height:auto;" alt="">`);
+  h = rep(h, /\[img=(\d+)\]([\s\S]*?)\[\/img\]/gi,
+    (_, w, src) => `<img src="${src.trim()}" style="width:${w}px;max-width:100%;height:auto;" alt="">`);
+  h = rep(h, /\[img\]([\s\S]*?)\[\/img\]/gi,
+    (_, src) => `<img src="${src.trim()}" style="max-width:100%;height:auto;" alt="">`);
 
+  // URLs
+  h = rep(h, /\[url=([^\]]+)\]([\s\S]*?)\[\/url\]/gi, '<a href="$1" target="_blank">$2</a>');
+  h = rep(h, /\[url\]([\s\S]*?)\[\/url\]/gi, '<a href="$1" target="_blank">$1</a>');
+
+  // Progress
   h = h.replace(/\[progress=(\d+)\]([\s\S]*?)\[\/progress\]/gi, (_, pct, label) => {
     const p = Math.min(100, Math.max(0, parseInt(pct)));
     const lbl = label.trim();
     return `<div class="bb-progress-wrap"><div class="bb-progress-bar" style="width:${p}%">${p}%${lbl ? ' — ' + lbl : ''}</div></div>`;
   });
 
+  // Quotes
   h = h.replace(/\[quote=([^\]]+)\]([\s\S]*?)\[\/quote\]/gi,
     (_, a, c) => `<blockquote><strong>${esc(a)}</strong> написа:<br>${c}</blockquote>`);
-  h = applyRepeat(h, /\[quote\]([\s\S]*?)\[\/quote\]/gi, '<blockquote>$1</blockquote>');
+  h = rep(h, /\[quote\]([\s\S]*?)\[\/quote\]/gi, '<blockquote>$1</blockquote>');
 
+  // Spoilers
   h = h.replace(/\[spoiler(?:=([^\]]*))?\]([\s\S]*?)\[\/spoiler\]/gi, (_, title, content) => {
     const lbl = title ? esc(title) : 'Покажи spoiler';
     return `<div style="margin:6px 0"><button class="bb-spoiler-btn" onclick="var b=this.nextElementSibling;b.classList.toggle('open');this.textContent=b.classList.contains('open')?'Скрий':'${lbl}'">${lbl}</button><div class="bb-spoiler-body">${content}</div></div>`;
   });
 
-  h = h.replace(/\[youtube\]([\s\S]*?)\[\/youtube\]/gi, (_, url) => {
-    const id = ytId(url);
-    return `<iframe class="bb-yt" src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`;
-  });
+  // YouTube
+  h = h.replace(/\[youtube\]([\s\S]*?)\[\/youtube\]/gi, (_, url) =>
+    `<iframe class="bb-yt" src="https://www.youtube.com/embed/${ytId(url)}" allowfullscreen></iframe>`);
 
+  // Tables
   h = h.replace(/\[table\]([\s\S]*?)\[\/table\]/gi, (_, body) => {
     let t = body;
     t = t.replace(/\[tr\]([\s\S]*?)\[\/tr\]/gi, '<tr>$1</tr>');
@@ -305,23 +256,20 @@ function bbToHTML(raw) {
     return '<table>' + t + '</table>';
   });
 
+  // Lists
   h = h.replace(/\[list(?:=(\w+))?\]([\s\S]*?)\[\/list\]/gi, (_, type, items) => {
-    const isOrdered = type === '1' || type === 'a' || type === 'i' || type === 'I' || type === 'A';
+    const isOrdered = type==='1'||type==='a'||type==='i'||type==='I'||type==='A';
     const tag = isOrdered ? 'ol' : 'ul';
     const typeAttr = isOrdered && type !== '1' ? ` type="${type}"` : '';
-    const liItems = items.replace(/\[\*\] ?([\s\S]*?)(?=\[\*\]|\[\/list\]|$)/gi, '<li>$1</li>');
-    return `<${tag}${typeAttr}>${liItems}</${tag}>`;
+    const li = items.replace(/\[\*\] ?([\s\S]*?)(?=\[\*\]|\[\/list\]|$)/gi, '<li>$1</li>');
+    return `<${tag}${typeAttr}>${li}</${tag}>`;
   });
 
   h = h.replace(/\n/g, '<br>');
   return h;
 }
 
-function update() {
-  spN = 0;
-  prev.innerHTML = bbToHTML(inp.value);
-}
-
+function update() { spN = 0; prev.innerHTML = bbToHTML(inp.value); }
 inp.addEventListener('input', update);
 update();
 </script>
