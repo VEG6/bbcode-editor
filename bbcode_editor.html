@@ -232,6 +232,26 @@ function bbToHTML(raw) {
     return `<div class="bb-progress-wrap"><div class="bb-progress-bar" style="width:${p}%">${p}%${lbl ? ' — ' + lbl : ''}</div></div>`;
   });
 
+  // Tables — must come BEFORE spoilers/quotes so nested tags are still raw BBCode
+  h = rep(h, /\[table\]([\s\S]*?)\[\/table\]/gi, (_, body) => {
+    let t = body;
+    // Strip newlines inside table so they don't become <br> later
+    t = t.replace(/\n/g, '');
+    t = t.replace(/\[tr\]([\s\S]*?)\[\/tr\]/gi, '<tr>$1</tr>');
+    t = t.replace(/\[th\]([\s\S]*?)\[\/th\]/gi, '<th>$1</th>');
+    t = t.replace(/\[td\]([\s\S]*?)\[\/td\]/gi, '<td>$1</td>');
+    return '<table>' + t + '</table>';
+  });
+
+  // Lists — also before spoilers
+  h = h.replace(/\[list(?:=(\w+))?\]([\s\S]*?)\[\/list\]/gi, (_, type, items) => {
+    const isOrdered = type==='1'||type==='a'||type==='i'||type==='I'||type==='A';
+    const tag = isOrdered ? 'ol' : 'ul';
+    const typeAttr = isOrdered && type !== '1' ? ` type="${type}"` : '';
+    const li = items.replace(/\[\*\] ?([\s\S]*?)(?=\[\*\]|\[\/list\]|$)/gi, '<li>$1</li>');
+    return `<${tag}${typeAttr}>${li}</${tag}>`;
+  });
+
   // Quotes
   h = h.replace(/\[quote=([^\]]+)\]([\s\S]*?)\[\/quote\]/gi,
     (_, a, c) => `<blockquote><strong>${esc(a)}</strong> написа:<br>${c}</blockquote>`);
@@ -247,24 +267,7 @@ function bbToHTML(raw) {
   h = h.replace(/\[youtube\]([\s\S]*?)\[\/youtube\]/gi, (_, url) =>
     `<iframe class="bb-yt" src="https://www.youtube.com/embed/${ytId(url)}" allowfullscreen></iframe>`);
 
-  // Tables
-  h = h.replace(/\[table\]([\s\S]*?)\[\/table\]/gi, (_, body) => {
-    let t = body;
-    t = t.replace(/\[tr\]([\s\S]*?)\[\/tr\]/gi, '<tr>$1</tr>');
-    t = t.replace(/\[th\]([\s\S]*?)\[\/th\]/gi, '<th>$1</th>');
-    t = t.replace(/\[td\]([\s\S]*?)\[\/td\]/gi, '<td>$1</td>');
-    return '<table>' + t + '</table>';
-  });
-
-  // Lists
-  h = h.replace(/\[list(?:=(\w+))?\]([\s\S]*?)\[\/list\]/gi, (_, type, items) => {
-    const isOrdered = type==='1'||type==='a'||type==='i'||type==='I'||type==='A';
-    const tag = isOrdered ? 'ol' : 'ul';
-    const typeAttr = isOrdered && type !== '1' ? ` type="${type}"` : '';
-    const li = items.replace(/\[\*\] ?([\s\S]*?)(?=\[\*\]|\[\/list\]|$)/gi, '<li>$1</li>');
-    return `<${tag}${typeAttr}>${li}</${tag}>`;
-  });
-
+  // Newlines to <br> — last, after all block elements are already HTML
   h = h.replace(/\n/g, '<br>');
   return h;
 }
