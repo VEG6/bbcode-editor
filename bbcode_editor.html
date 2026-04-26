@@ -118,6 +118,7 @@ h2 { font-size: 20px; font-weight: 600; color: #333; }
       <button class="tb-btn" onclick="ins('[shadow=gray,1,1]','[/shadow]')" style="text-shadow:1px 1px 2px gray;" data-i="shadowBtn"></button>
       <button class="tb-btn" onclick="promptShadow()" data-i="shadowCustomBtn"></button>
       <button class="tb-btn" onclick="ins('[glow=red,2,300]','[/glow]')" style="text-shadow:0 0 6px red;" data-i="glowBtn"></button>
+      <button class="tb-btn" onclick="promptGlow()" data-i="glowCustomBtn"></button>
       <button class="tb-btn" onclick="ins('[blur]','[/blur]')" style="filter:blur(2px);display:inline-block;" data-i="blurBtn"></button>
     </div>
 
@@ -207,7 +208,7 @@ const i18n = {
     secLists: 'Списъци', secTable: 'Таблица', secMedia: 'Медия',
     secBlocks: 'Блокове', secSpecial: 'Специални',
     colorBtn: '+цвят',
-    shadowBtn: 'сянка', shadowCustomBtn: 'сянка…', glowBtn: 'блясък', blurBtn: 'замъгляване',
+    shadowBtn: 'сянка', shadowCustomBtn: 'сянка…', glowBtn: 'блясък', glowCustomBtn: 'блясък…', blurBtn: 'замъгляване',
     itemBtn: 'точка', tableBtn: 'таблица',
     linkBtn: 'линк', imgSizeBtn: 'с размер',
     quoteBtn: 'цитат', noparseBtn: 'noparse', spoilerTitledBtn: 'spoiler с заглавие',
@@ -217,6 +218,8 @@ const i18n = {
     promptShadowColor: 'Цвят на сянката (напр. gray, #333333):',
     promptShadowH: 'Хоризонтално отместване (px):',
     promptShadowV: 'Вертикално отместване (px):',
+    promptGlowColor: 'Цвят на блясъка (напр. red, #ff00ff):',
+    promptGlowStrength: 'Сила на блясъка (1-5):',
     promptQuoteAuthor: 'Автор на цитата (или остави празно):',
     promptSpoilerTitle: 'Заглавие на spoiler:',
     promptImgW: 'Ширина (px):', promptImgH: 'Височина (px — или остави празно):',
@@ -231,7 +234,7 @@ const i18n = {
     secLists: 'Lists', secTable: 'Table', secMedia: 'Media',
     secBlocks: 'Blocks', secSpecial: 'Special',
     colorBtn: '+color',
-    shadowBtn: 'shadow', shadowCustomBtn: 'shadow…', glowBtn: 'glow', blurBtn: 'blur',
+    shadowBtn: 'shadow', shadowCustomBtn: 'shadow…', glowBtn: 'glow', glowCustomBtn: 'glow…', blurBtn: 'blur',
     itemBtn: 'item', tableBtn: 'table',
     linkBtn: 'link', imgSizeBtn: 'sized',
     quoteBtn: 'quote', noparseBtn: 'noparse', spoilerTitledBtn: 'titled spoiler',
@@ -241,6 +244,8 @@ const i18n = {
     promptShadowColor: 'Shadow color (e.g. gray, #333333):',
     promptShadowH: 'Horizontal offset (px):',
     promptShadowV: 'Vertical offset (px):',
+    promptGlowColor: 'Glow color (e.g. red, #ff00ff):',
+    promptGlowStrength: 'Glow strength (1-5):',
     promptQuoteAuthor: 'Quote author (or leave blank):',
     promptSpoilerTitle: 'Spoiler title:',
     promptImgW: 'Width (px):', promptImgH: 'Height (px — or leave blank):',
@@ -292,6 +297,11 @@ function promptShadow() {
   const h = prompt(T.promptShadowH, '2'); if (h === null) return;
   const v = prompt(T.promptShadowV, '2'); if (v === null) return;
   ins('[shadow='+c+','+h+','+v+']','[/shadow]');
+}
+function promptGlow() {
+  const c = prompt(T.promptGlowColor, 'red'); if (!c) return;
+  const s = prompt(T.promptGlowStrength, '2'); if (s === null) return;
+  ins('[glow='+c+','+s+']','[/glow]');
 }
 function promptQuote() {
   const a = prompt(T.promptQuoteAuthor); if (a === null) return;
@@ -475,8 +485,8 @@ function bbToHTML(raw) {
 function update() { spN = 0; prev.innerHTML = bbToHTML(inp.value); }
 inp.addEventListener('input', update);
 
-// Init
-setLang('en');
+// Init — wait for DOM to be ready
+document.addEventListener('DOMContentLoaded', () => setLang('en'));
 </script>
 </body>
 </html>
