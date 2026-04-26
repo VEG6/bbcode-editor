@@ -1,35 +1,39 @@
 <!DOCTYPE html>
-<html lang="bg">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBCode Editor / Редактор</title>
+<title>BBCode Editor</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; display: flex; justify-content: center; }
-.wrap { background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 20px; width: 100%; max-width: 1100px; }
+.wrap { background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 20px; width: 100%; max-width: 1200px; }
 .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px; }
 h2 { font-size: 20px; font-weight: 600; color: #333; }
 .lang-switcher { display: flex; gap: 6px; }
 .lang-btn { padding: 5px 14px; font-size: 13px; border: 1px solid #ccc; background: #eee; color: #333; border-radius: 20px; cursor: pointer; font-weight: 500; transition: all 0.15s; }
 .lang-btn:hover { background: #ddd; }
 .lang-btn.active { background: #2255aa; color: #fff; border-color: #2255aa; }
-.toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; align-items: center; }
-.tb-group { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
-.tb-sep { width: 1px; background: #ccc; margin: 0 4px; align-self: stretch; min-height: 24px; }
-.tb-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.05em; }
-.tb-btn { padding: 5px 10px; font-size: 13px; border: 1px solid #ccc; background: #eee; color: #333; border-radius: 4px; cursor: pointer; line-height: 1.4; }
-.tb-btn:hover { background: #ddd; }
-.panels { display: flex; gap: 16px; }
-@media (max-width: 700px) { .panels { flex-direction: column; } }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; align-items: flex-start; }
+.tb-section { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 6px; padding: 5px 8px; }
+.tb-section-title { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; width: 100%; margin-bottom: 3px; font-weight: 600; }
+.tb-btn { padding: 4px 9px; font-size: 12px; border: 1px solid #ccc; background: #fff; color: #333; border-radius: 4px; cursor: pointer; line-height: 1.4; white-space: nowrap; }
+.tb-btn:hover { background: #e8e8e8; }
+
+.panels { display: flex; gap: 16px; margin-top: 10px; }
+@media (max-width: 750px) { .panels { flex-direction: column; } }
 .panel { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .panel label { font-size: 13px; font-weight: 600; color: #555; }
-#bbInput { width: 100%; height: 400px; padding: 10px; resize: vertical; border: 1px solid #ccc; border-radius: 4px; background: #fff; color: #333; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; }
-.preview-box { width: 100%; height: 400px; padding: 12px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; color: #333; font-size: 14px; line-height: 1.6; }
+#bbInput { width: 100%; height: 420px; padding: 10px; resize: vertical; border: 1px solid #ccc; border-radius: 4px; background: #fff; color: #333; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; }
+.preview-box { width: 100%; height: 420px; padding: 12px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; color: #333; font-size: 14px; line-height: 1.6; }
 
-/* Preview styles */
+/* ── Preview styles ── */
+.preview-box h1 { font-size: 2em; font-weight: 700; margin: 8px 0; border-bottom: 2px solid #eee; padding-bottom: 4px; }
+.preview-box h2 { font-size: 1.5em; font-weight: 600; margin: 8px 0; }
+.preview-box h3 { font-size: 1.2em; font-weight: 600; margin: 6px 0; }
 .preview-box blockquote { border-left: 4px solid #4a90d9; margin: 8px 0; padding: 8px 12px; background: #eef4fb; border-radius: 0 4px 4px 0; font-style: italic; }
-.preview-box pre { background: #f0f0f0; color: #333; border: 1px solid #ddd; padding: 10px; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 13px; margin: 6px 0; }
+.preview-box pre { background: #f0f0f0; color: #333; border: 1px solid #ddd; padding: 10px; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 13px; margin: 6px 0; white-space: pre-wrap; }
 .preview-box img { max-width: 100%; height: auto; border-radius: 4px; }
 .preview-box table { border-collapse: collapse; width: 100%; margin: 8px 0; }
 .preview-box td, .preview-box th { border: 1px solid #ccc; padding: 6px 10px; vertical-align: top; }
@@ -41,6 +45,9 @@ h2 { font-size: 20px; font-weight: 600; color: #333; }
 .preview-box .bb-center { text-align: center; }
 .preview-box .bb-right { text-align: right; }
 .preview-box .bb-justify { text-align: justify; }
+.preview-box .bb-float-left { float: left; margin: 0 12px 8px 0; }
+.preview-box .bb-float-right { float: right; margin: 0 0 8px 12px; }
+.preview-box .bb-clear { clear: both; }
 .preview-box .bb-yt { aspect-ratio: 16/9; width: 100%; border: none; border-radius: 4px; display: block; margin: 8px 0; }
 .preview-box .bb-spoiler-btn { font-size: 12px; padding: 3px 12px; cursor: pointer; border: 1px solid #ccc; background: #eee; color: #555; border-radius: 4px; }
 .preview-box .bb-spoiler-btn:hover { background: #ddd; }
@@ -54,106 +61,134 @@ h2 { font-size: 20px; font-weight: 600; color: #333; }
 .preview-box .bb-marquee span { display: inline-block; animation: bbmarquee 8s linear infinite; }
 @keyframes bbmarquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 .preview-box .bb-progress-wrap { background: #e9ecef; border: 1px solid #ccc; border-radius: 999px; height: 22px; overflow: hidden; margin: 8px 0; }
-.preview-box .bb-progress-bar { height: 100%; background: #4a90d9; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; transition: width 0.4s; min-width: 2rem; }
+.preview-box .bb-progress-bar { height: 100%; background: #4a90d9; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; min-width: 2rem; }
+.preview-box .bb-preformatted { font-family: 'Courier New', monospace; white-space: pre; display: block; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <div class="header">
-    <h2 id="title">BBCode Редактор</h2>
+    <h2 id="title">BBCode Editor</h2>
     <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLang('bg')">🇧🇬 БГ</button>
-      <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+      <button class="lang-btn" onclick="setLang('bg')">🇧🇬 БГ</button>
+      <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
     </div>
   </div>
 
-  <div class="toolbar">
-    <div class="tb-group">
-      <span class="tb-label" data-i="text"></span>
+  <div class="toolbar" id="toolbar">
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secText"></div>
       <button class="tb-btn" onclick="ins('[b]','[/b]')" style="font-weight:700;">B</button>
       <button class="tb-btn" onclick="ins('[i]','[/i]')" style="font-style:italic;">I</button>
       <button class="tb-btn" onclick="ins('[u]','[/u]')" style="text-decoration:underline;">U</button>
-      <button class="tb-btn" onclick="ins('[s]','[/s]')" style="text-decoration:line-through;">S</button>
+      <button class="tb-btn" onclick="ins('[s]','[/s]')" style="text-decoration:line-through;" title="[s] / [strike]">S</button>
       <button class="tb-btn" onclick="ins('[sub]','[/sub]')">x₂</button>
       <button class="tb-btn" onclick="ins('[sup]','[/sup]')">x²</button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="size"></span>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secHeadings"></div>
+      <button class="tb-btn" onclick="ins('[h1]','[/h1]')" style="font-weight:700;font-size:15px;">H1</button>
+      <button class="tb-btn" onclick="ins('[h2]','[/h2]')" style="font-weight:700;font-size:13px;">H2</button>
+      <button class="tb-btn" onclick="ins('[h3]','[/h3]')" style="font-weight:700;font-size:11px;">H3</button>
+    </div>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secSize"></div>
       <button class="tb-btn" onclick="ins('[size=10]','[/size]')">xs</button>
       <button class="tb-btn" onclick="ins('[size=14]','[/size]')">sm</button>
       <button class="tb-btn" onclick="ins('[size=18]','[/size]')">lg</button>
       <button class="tb-btn" onclick="ins('[size=24]','[/size]')">xl</button>
+      <button class="tb-btn" onclick="ins('[font=Arial]','[/font]')">font</button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="color"></span>
-      <button class="tb-btn" onclick="ins('[color=red]','[/color]')" style="color:red;">A</button>
-      <button class="tb-btn" onclick="ins('[color=blue]','[/color]')" style="color:#2255aa;">A</button>
-      <button class="tb-btn" onclick="ins('[color=green]','[/color]')" style="color:green;">A</button>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secColor"></div>
+      <button class="tb-btn" onclick="ins('[color=red]','[/color]')" style="color:red;font-weight:600;">A</button>
+      <button class="tb-btn" onclick="ins('[color=blue]','[/color]')" style="color:#2255aa;font-weight:600;">A</button>
+      <button class="tb-btn" onclick="ins('[color=green]','[/color]')" style="color:green;font-weight:600;">A</button>
+      <button class="tb-btn" onclick="ins('[color=#ff6600]','[/color]')" style="color:#ff6600;font-weight:600;">A</button>
       <button class="tb-btn" onclick="promptColor()" data-i="colorBtn"></button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="align"></span>
-      <button class="tb-btn" onclick="ins('[left]','[/left]')">◀</button>
-      <button class="tb-btn" onclick="ins('[center]','[/center]')">▬</button>
-      <button class="tb-btn" onclick="ins('[right]','[/right]')">▶</button>
-      <button class="tb-btn" onclick="ins('[justify]','[/justify]')">≡</button>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secEffects"></div>
+      <button class="tb-btn" onclick="ins('[shadow=gray,1,1]','[/shadow]')" style="text-shadow:1px 1px 2px gray;" data-i="shadowBtn"></button>
+      <button class="tb-btn" onclick="promptShadow()" data-i="shadowCustomBtn"></button>
+      <button class="tb-btn" onclick="ins('[glow=red,2,300]','[/glow]')" style="text-shadow:0 0 6px red;" data-i="glowBtn"></button>
+      <button class="tb-btn" onclick="ins('[blur]','[/blur]')" style="filter:blur(2px);display:inline-block;" data-i="blurBtn"></button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="lists"></span>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secAlign"></div>
+      <button class="tb-btn" onclick="ins('[left]','[/left]')">◀ left</button>
+      <button class="tb-btn" onclick="ins('[center]','[/center]')">▬ center</button>
+      <button class="tb-btn" onclick="ins('[right]','[/right]')">▶ right</button>
+      <button class="tb-btn" onclick="ins('[justify]','[/justify]')">≡ justify</button>
+      <button class="tb-btn" onclick="ins('[float=left]','[/float]')">⬅ float L</button>
+      <button class="tb-btn" onclick="ins('[float=right]','[/float]')">➡ float R</button>
+    </div>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secLists"></div>
       <button class="tb-btn" onclick="ins('[list]\n[*] ','[/list]')">• list</button>
       <button class="tb-btn" onclick="ins('[list=1]\n[*] ','[/list]')">1. list</button>
       <button class="tb-btn" onclick="ins('[list=a]\n[*] ','[/list]')">a. list</button>
-      <button class="tb-btn" onclick="ins('[*] ','')">• <span data-i="item"></span></button>
+      <button class="tb-btn" onclick="ins('[list=disc]\n[*] ','[/list]')">◉ disc</button>
+      <button class="tb-btn" onclick="ins('[list=circle]\n[*] ','[/list]')">○ circle</button>
+      <button class="tb-btn" onclick="ins('[list=square]\n[*] ','[/list]')">▪ square</button>
+      <button class="tb-btn" onclick="ins('[*] ','')">• <span data-i="itemBtn"></span></button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="table"></span>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secTable"></div>
       <button class="tb-btn" onclick="insertTable()" data-i="tableBtn"></button>
       <button class="tb-btn" onclick="ins('[th]','[/th]')">th</button>
       <button class="tb-btn" onclick="ins('[td]','[/td]')">td</button>
       <button class="tb-btn" onclick="ins('[tr]','[/tr]')">tr</button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="media"></span>
-      <button class="tb-btn" onclick="ins('[url=https://]','[/url]')">🔗 <span data-i="link"></span></button>
-      <button class="tb-btn" onclick="ins('[img]','[/img]')">🖼 <span data-i="img"></span></button>
-      <button class="tb-btn" onclick="promptImg()">🖼 <span data-i="imgSize"></span></button>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secMedia"></div>
+      <button class="tb-btn" onclick="ins('[url=https://]','[/url]')">🔗 <span data-i="linkBtn"></span></button>
+      <button class="tb-btn" onclick="ins('[email]','[/email]')">✉ email</button>
+      <button class="tb-btn" onclick="ins('[img]','[/img]')">🖼 img</button>
+      <button class="tb-btn" onclick="promptImg()">🖼 <span data-i="imgSizeBtn"></span></button>
       <button class="tb-btn" onclick="ins('[youtube]','[/youtube]')">▶ youtube</button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="blocks"></span>
-      <button class="tb-btn" onclick="promptQuote()" data-i="quote"></button>
-      <button class="tb-btn" onclick="ins('[code]','[/code]')" data-i="code"></button>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secBlocks"></div>
+      <button class="tb-btn" onclick="promptQuote()" data-i="quoteBtn"></button>
+      <button class="tb-btn" onclick="ins('[code]','[/code]')">[ code ]</button>
+      <button class="tb-btn" onclick="ins('[noparse]','[/noparse]')" data-i="noparseBtn"></button>
+      <button class="tb-btn" onclick="ins('[pre]','[/pre]')">pre</button>
       <button class="tb-btn" onclick="ins('[spoiler]','[/spoiler]')">spoiler</button>
-      <button class="tb-btn" onclick="ins('[hr]','')">━ <span data-i="line"></span></button>
+      <button class="tb-btn" onclick="promptSpoiler()" data-i="spoilerTitledBtn"></button>
+      <button class="tb-btn" onclick="ins('[hr]','')">━ hr</button>
     </div>
-    <div class="tb-sep"></div>
-    <div class="tb-group">
-      <span class="tb-label" data-i="special"></span>
+
+    <div class="tb-section">
+      <div class="tb-section-title" data-i="secSpecial"></div>
       <button class="tb-btn" onclick="ins('[highlight]','[/highlight]')" style="background:#fff176;color:#333;">highlight</button>
       <button class="tb-btn" onclick="ins('[box]','[/box]')">box</button>
       <button class="tb-btn" onclick="ins('[warning]','[/warning]')" style="color:#856404;">⚠ warning</button>
       <button class="tb-btn" onclick="ins('[success]','[/success]')" style="color:#1a7a3a;">✔ success</button>
       <button class="tb-btn" onclick="ins('[marquee]','[/marquee]')">marquee</button>
       <button class="tb-btn" onclick="promptProgress()">progress</button>
-      <button class="tb-btn" onclick="ins('[font=Arial]','[/font]')">font</button>
     </div>
+
   </div>
 
   <div class="panels">
     <div class="panel">
-      <label for="bbInput" id="labelInput">Въвеждане (BBCode):</label>
-      <textarea id="bbInput" placeholder="Напишете BBCode тук..."></textarea>
+      <label for="bbInput" id="labelInput">Input (BBCode):</label>
+      <textarea id="bbInput" placeholder="Type your BBCode here..."></textarea>
     </div>
     <div class="panel">
-      <label id="labelPreview">Преглед в реално време:</label>
+      <label id="labelPreview">Live Preview:</label>
       <div id="preview" class="preview-box"></div>
     </div>
   </div>
@@ -161,116 +196,118 @@ h2 { font-size: 20px; font-weight: 600; color: #333; }
 </div>
 
 <script>
-/* ── i18n ── */
+/* ══════════════════════════════════════
+   i18n
+══════════════════════════════════════ */
 const i18n = {
   bg: {
     title: 'BBCode Редактор',
-    text: 'Текст', size: 'Размер', color: 'Цвят', colorBtn: '+цвят',
-    align: 'Подравн.', lists: 'Списъци', item: 'точка',
-    table: 'Таблица', tableBtn: 'таблица',
-    media: 'Медия', link: 'линк', img: 'снимка', imgSize: 'размер',
-    blocks: 'Блокове', quote: 'цитат', code: 'код', line: 'линия',
-    special: 'Специални',
-    labelInput: 'Въвеждане (BBCode):',
-    labelPreview: 'Преглед в реално време:',
+    secText: 'Текст', secHeadings: 'Заглавия', secSize: 'Размер',
+    secColor: 'Цвят', secEffects: 'Ефекти', secAlign: 'Подравняване',
+    secLists: 'Списъци', secTable: 'Таблица', secMedia: 'Медия',
+    secBlocks: 'Блокове', secSpecial: 'Специални',
+    colorBtn: '+цвят',
+    shadowBtn: 'сянка', shadowCustomBtn: 'сянка…', glowBtn: 'блясък', blurBtn: 'замъгляване',
+    itemBtn: 'точка', tableBtn: 'таблица',
+    linkBtn: 'линк', imgSizeBtn: 'с размер',
+    quoteBtn: 'цитат', noparseBtn: 'noparse', spoilerTitledBtn: 'spoiler с заглавие',
+    labelInput: 'Въвеждане (BBCode):', labelPreview: 'Преглед в реално време:',
     placeholder: 'Напишете BBCode тук...',
     promptColor: 'Цвят (напр. #ff6600 или orange):',
+    promptShadowColor: 'Цвят на сянката (напр. gray, #333333):',
+    promptShadowH: 'Хоризонтално отместване (px):',
+    promptShadowV: 'Вертикално отместване (px):',
     promptQuoteAuthor: 'Автор на цитата (или остави празно):',
-    promptImgW: 'Ширина (px):',
-    promptImgH: 'Височина (px — или остави празно за auto):',
-    promptPct: 'Процент (0-100):',
-    promptRows: 'Брой редове:',
-    promptCols: 'Брой колони:',
-    thLabel: 'Заглавие',
-    tdLabel: 'Клетка',
-    spoilerShow: 'Покажи spoiler',
-    spoilerHide: 'Скрий',
-    quotedBy: 'написа:',
+    promptSpoilerTitle: 'Заглавие на spoiler:',
+    promptImgW: 'Ширина (px):', promptImgH: 'Височина (px — или остави празно):',
+    promptPct: 'Процент (0-100):', promptRows: 'Брой редове:', promptCols: 'Брой колони:',
+    thLabel: 'Заглавие', tdLabel: 'Клетка',
+    spoilerShow: 'Покажи spoiler', spoilerHide: 'Скрий', quotedBy: 'написа:',
   },
   en: {
     title: 'BBCode Editor',
-    text: 'Text', size: 'Size', color: 'Color', colorBtn: '+color',
-    align: 'Align', lists: 'Lists', item: 'item',
-    table: 'Table', tableBtn: 'table',
-    media: 'Media', link: 'link', img: 'image', imgSize: 'size',
-    blocks: 'Blocks', quote: 'quote', code: 'code', line: 'line',
-    special: 'Special',
-    labelInput: 'Input (BBCode):',
-    labelPreview: 'Live Preview:',
+    secText: 'Text', secHeadings: 'Headings', secSize: 'Size',
+    secColor: 'Color', secEffects: 'Effects', secAlign: 'Align',
+    secLists: 'Lists', secTable: 'Table', secMedia: 'Media',
+    secBlocks: 'Blocks', secSpecial: 'Special',
+    colorBtn: '+color',
+    shadowBtn: 'shadow', shadowCustomBtn: 'shadow…', glowBtn: 'glow', blurBtn: 'blur',
+    itemBtn: 'item', tableBtn: 'table',
+    linkBtn: 'link', imgSizeBtn: 'sized',
+    quoteBtn: 'quote', noparseBtn: 'noparse', spoilerTitledBtn: 'titled spoiler',
+    labelInput: 'Input (BBCode):', labelPreview: 'Live Preview:',
     placeholder: 'Type your BBCode here...',
     promptColor: 'Color (e.g. #ff6600 or orange):',
+    promptShadowColor: 'Shadow color (e.g. gray, #333333):',
+    promptShadowH: 'Horizontal offset (px):',
+    promptShadowV: 'Vertical offset (px):',
     promptQuoteAuthor: 'Quote author (or leave blank):',
-    promptImgW: 'Width (px):',
-    promptImgH: 'Height (px — or leave blank for auto):',
-    promptPct: 'Percentage (0-100):',
-    promptRows: 'Number of rows:',
-    promptCols: 'Number of columns:',
-    thLabel: 'Header',
-    tdLabel: 'Cell',
-    spoilerShow: 'Show spoiler',
-    spoilerHide: 'Hide',
-    quotedBy: 'wrote:',
+    promptSpoilerTitle: 'Spoiler title:',
+    promptImgW: 'Width (px):', promptImgH: 'Height (px — or leave blank):',
+    promptPct: 'Percentage (0-100):', promptRows: 'Number of rows:', promptCols: 'Number of columns:',
+    thLabel: 'Header', tdLabel: 'Cell',
+    spoilerShow: 'Show spoiler', spoilerHide: 'Hide', quotedBy: 'wrote:',
   }
 };
 
-let lang = 'bg';
+let lang = 'en';
 let T = i18n[lang];
 
 function setLang(l) {
-  lang = l;
-  T = i18n[l];
+  lang = l; T = i18n[l];
   document.documentElement.lang = l;
   document.title = T.title;
-
-  // Update lang buttons
-  document.querySelectorAll('.lang-btn').forEach(b => {
-    b.classList.toggle('active', b.textContent.includes(l === 'bg' ? 'БГ' : 'EN'));
-  });
-
-  // Update all data-i elements
-  document.querySelectorAll('[data-i]').forEach(el => {
-    const key = el.getAttribute('data-i');
-    if (T[key] !== undefined) el.textContent = T[key];
-  });
-
   document.getElementById('title').textContent = T.title;
   document.getElementById('labelInput').textContent = T.labelInput;
   document.getElementById('labelPreview').textContent = T.labelPreview;
   document.getElementById('bbInput').placeholder = T.placeholder;
-
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const k = el.getAttribute('data-i');
+    if (T[k] !== undefined) el.textContent = T[k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(l === 'bg' ? 'БГ' : 'EN'));
+  });
   update();
 }
 
-/* ── Editor ── */
+/* ══════════════════════════════════════
+   Editor helpers
+══════════════════════════════════════ */
 const inp = document.getElementById('bbInput');
 const prev = document.getElementById('preview');
 
 function ins(open, close) {
-  const s = inp.selectionStart, e = inp.selectionEnd;
-  const sel = inp.value.substring(s, e);
+  const s = inp.selectionStart, e = inp.selectionEnd, sel = inp.value.substring(s, e);
   inp.value = inp.value.substring(0, s) + open + sel + close + inp.value.substring(e);
   inp.selectionStart = inp.selectionEnd = s === e ? s + open.length : s + open.length + sel.length + close.length;
   inp.focus(); update();
 }
 
 function promptColor() {
-  const c = prompt(T.promptColor);
-  if (c) ins('[color='+c+']','[/color]');
+  const c = prompt(T.promptColor); if (c) ins('[color='+c+']','[/color]');
+}
+function promptShadow() {
+  const c = prompt(T.promptShadowColor, 'gray'); if (!c) return;
+  const h = prompt(T.promptShadowH, '2'); if (h === null) return;
+  const v = prompt(T.promptShadowV, '2'); if (v === null) return;
+  ins('[shadow='+c+','+h+','+v+']','[/shadow]');
 }
 function promptQuote() {
-  const a = prompt(T.promptQuoteAuthor);
-  if (a === null) return;
+  const a = prompt(T.promptQuoteAuthor); if (a === null) return;
   ins(a ? '[quote='+a+']' : '[quote]', '[/quote]');
 }
+function promptSpoiler() {
+  const t = prompt(T.promptSpoilerTitle); if (!t) return;
+  ins('[spoiler='+t+']','[/spoiler]');
+}
 function promptImg() {
-  const w = prompt(T.promptImgW, '400');
-  if (!w) return;
+  const w = prompt(T.promptImgW, '400'); if (!w) return;
   const h = prompt(T.promptImgH, '');
   ins(h ? '[img='+w+'x'+h+']' : '[img='+w+']', '[/img]');
 }
 function promptProgress() {
-  const v = prompt(T.promptPct, '50') || '50';
-  ins('[progress='+v+']','[/progress]');
+  const v = prompt(T.promptPct, '50') || '50'; ins('[progress='+v+']','[/progress]');
 }
 function insertTable() {
   const rows = parseInt(prompt(T.promptRows, '2') || 2);
@@ -280,55 +317,90 @@ function insertTable() {
   for (let c = 0; c < cols; c++) t += '[th]'+T.thLabel+' '+(c+1)+'[/th]';
   t += '[/tr]\n';
   for (let r = 0; r < rows; r++) {
-    t += '[tr]';
-    for (let c = 0; c < cols; c++) t += '[td]'+T.tdLabel+'[/td]';
-    t += '[/tr]\n';
+    t += '[tr]'; for (let c = 0; c < cols; c++) t += '[td]'+T.tdLabel+'[/td]'; t += '[/tr]\n';
   }
-  t += '[/table]';
-  ins(t, '');
+  t += '[/table]'; ins(t, '');
 }
 
-/* ── Parser ── */
+/* ══════════════════════════════════════
+   Parser
+══════════════════════════════════════ */
 let spN = 0;
 function esc(s) { const d = document.createElement('div'); d.innerText = s; return d.innerHTML; }
 function ytId(url) { const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/); return m ? m[1] : url.trim(); }
 function rep(h, re, fn) { let p; do { p = h; h = h.replace(re, fn); } while (h !== p); return h; }
 
 function bbToHTML(raw) {
-  // Extract [code] blocks BEFORE escaping so their contents are shown literally
-  const codePlaceholders = [];
-  let extracted = raw.replace(/\[code\]([\s\S]*?)\[\/code\]/gi, (_, content) => {
-    const idx = codePlaceholders.length;
-    codePlaceholders.push(content);
-    return `\x00CODE${idx}\x00`;
+  // 1. Extract [noparse] blocks first (raw, shown as literal text)
+  const noParsePlaceholders = [];
+  let extracted = raw.replace(/\[noparse\]([\s\S]*?)\[\/noparse\]/gi, (_, c) => {
+    noParsePlaceholders.push(c);
+    return '\x01NOPARSE'+(noParsePlaceholders.length-1)+'\x01';
   });
 
+  // 2. Extract [code] blocks (shown as literal text, no BBCode inside)
+  const codePlaceholders = [];
+  extracted = extracted.replace(/\[code\]([\s\S]*?)\[\/code\]/gi, (_, c) => {
+    codePlaceholders.push(c);
+    return '\x01CODE'+(codePlaceholders.length-1)+'\x01';
+  });
+
+  // 3. HTML-escape everything else
   let h = esc(extracted);
 
-  // NOTE: code placeholders restored AFTER all rules below
-
+  // 4. Standard formatting rules
   const rules = [
-    [/\[b\]([\s\S]*?)\[\/b\]/gi, '<strong>$1</strong>'],
-    [/\[i\]([\s\S]*?)\[\/i\]/gi, '<em>$1</em>'],
-    [/\[u\]([\s\S]*?)\[\/u\]/gi, '<u>$1</u>'],
-    [/\[s\]([\s\S]*?)\[\/s\]/gi, '<del>$1</del>'],
-    [/\[sub\]([\s\S]*?)\[\/sub\]/gi, '<sub>$1</sub>'],
-    [/\[sup\]([\s\S]*?)\[\/sup\]/gi, '<sup>$1</sup>'],
-    [/\[color=([a-zA-Z0-9#]+)\]([\s\S]*?)\[\/color\]/gi, '<span style="color:$1;">$2</span>'],
-    [/\[size=(\d+)\]([\s\S]*?)\[\/size\]/gi, '<span style="font-size:$1px;line-height:1.4;">$2</span>'],
-    [/\[font=([^\]]+)\]([\s\S]*?)\[\/font\]/gi, '<span style="font-family:$1;">$2</span>'],
-    [/\[left\]([\s\S]*?)\[\/left\]/gi, '<div class="bb-left">$1</div>'],
+    [/\[b\]([\s\S]*?)\[\/b\]/gi,           '<strong>$1</strong>'],
+    [/\[i\]([\s\S]*?)\[\/i\]/gi,           '<em>$1</em>'],
+    [/\[u\]([\s\S]*?)\[\/u\]/gi,           '<u>$1</u>'],
+    [/\[s\]([\s\S]*?)\[\/s\]/gi,           '<del>$1</del>'],
+    [/\[strike\]([\s\S]*?)\[\/strike\]/gi, '<del>$1</del>'],
+    [/\[sub\]([\s\S]*?)\[\/sub\]/gi,       '<sub>$1</sub>'],
+    [/\[sup\]([\s\S]*?)\[\/sup\]/gi,       '<sup>$1</sup>'],
+    [/\[h1\]([\s\S]*?)\[\/h1\]/gi,         '<h1>$1</h1>'],
+    [/\[h2\]([\s\S]*?)\[\/h2\]/gi,         '<h2>$1</h2>'],
+    [/\[h3\]([\s\S]*?)\[\/h3\]/gi,         '<h3>$1</h3>'],
+    [/\[color=([a-zA-Z0-9#]+)\]([\s\S]*?)\[\/color\]/gi,   '<span style="color:$1;">$2</span>'],
+    [/\[size=(\d+)\]([\s\S]*?)\[\/size\]/gi,               '<span style="font-size:$1px;line-height:1.4;">$2</span>'],
+    [/\[font=([^\]]+)\]([\s\S]*?)\[\/font\]/gi,            '<span style="font-family:$1;">$2</span>'],
+    [/\[left\]([\s\S]*?)\[\/left\]/gi,     '<div class="bb-left">$1</div>'],
     [/\[center\]([\s\S]*?)\[\/center\]/gi, '<div class="bb-center">$1</div>'],
-    [/\[right\]([\s\S]*?)\[\/right\]/gi, '<div class="bb-right">$1</div>'],
-    [/\[justify\]([\s\S]*?)\[\/justify\]/gi, '<div class="bb-justify">$1</div>'],
+    [/\[right\]([\s\S]*?)\[\/right\]/gi,   '<div class="bb-right">$1</div>'],
+    [/\[justify\]([\s\S]*?)\[\/justify\]/gi,'<div class="bb-justify">$1</div>'],
+    [/\[float=left\]([\s\S]*?)\[\/float\]/gi,  '<div class="bb-float-left">$1</div><div class="bb-clear"></div>'],
+    [/\[float=right\]([\s\S]*?)\[\/float\]/gi, '<div class="bb-float-right">$1</div><div class="bb-clear"></div>'],
     [/\[highlight\]([\s\S]*?)\[\/highlight\]/gi, '<span class="bb-highlight">$1</span>'],
-    [/\[box\]([\s\S]*?)\[\/box\]/gi, '<div class="bb-box">$1</div>'],
-    [/\[warning\]([\s\S]*?)\[\/warning\]/gi, '<div class="bb-warning">$1</div>'],
-    [/\[success\]([\s\S]*?)\[\/success\]/gi, '<div class="bb-success">$1</div>'],
-    [/\[marquee\]([\s\S]*?)\[\/marquee\]/gi, '<div class="bb-marquee"><span>$1</span></div>'],
-    [/\[hr\]/gi, '<hr>'],
+    [/\[box\]([\s\S]*?)\[\/box\]/gi,       '<div class="bb-box">$1</div>'],
+    [/\[warning\]([\s\S]*?)\[\/warning\]/gi,'<div class="bb-warning">$1</div>'],
+    [/\[success\]([\s\S]*?)\[\/success\]/gi,'<div class="bb-success">$1</div>'],
+    [/\[marquee\]([\s\S]*?)\[\/marquee\]/gi,'<div class="bb-marquee"><span>$1</span></div>'],
+    [/\[pre\]([\s\S]*?)\[\/pre\]/gi,       '<span class="bb-preformatted">$1</span>'],
+    [/\[hr\]/gi,                           '<hr>'],
+    [/\[email\]([\s\S]*?)\[\/email\]/gi,   '<a href="mailto:$1">$1</a>'],
+    [/\[email=([^\]]+)\]([\s\S]*?)\[\/email\]/gi, '<a href="mailto:$1">$2</a>'],
   ];
   rules.forEach(([re, fn]) => { h = rep(h, re, fn); });
+
+  // Shadow: [shadow=color,h,v]text[/shadow]  or  [shadow=color]text[/shadow]
+  h = rep(h, /\[shadow=([a-zA-Z0-9#,]+)\]([\s\S]*?)\[\/shadow\]/gi, (_, params, text) => {
+    const parts = params.split(',');
+    const color = parts[0] || 'gray';
+    const hOff  = parts[1] || '2';
+    const vOff  = parts[2] || '2';
+    return `<span style="text-shadow:${hOff}px ${vOff}px 4px ${color};">${text}</span>`;
+  });
+
+  // Glow: [glow=color,strength,size]text[/glow]
+  h = rep(h, /\[glow=([a-zA-Z0-9#,]+)\]([\s\S]*?)\[\/glow\]/gi, (_, params, text) => {
+    const parts  = params.split(',');
+    const color  = parts[0] || 'red';
+    const spread = parts[1] ? parseInt(parts[1]) : 2;
+    return `<span style="text-shadow:0 0 ${spread*3}px ${color},0 0 ${spread}px ${color};">${text}</span>`;
+  });
+
+  // Blur: [blur]text[/blur]
+  h = rep(h, /\[blur\]([\s\S]*?)\[\/blur\]/gi,
+    '<span style="filter:blur(3px);display:inline-block;">$1</span>');
 
   // Images — [img=WxH], [img=W], [img]
   h = rep(h, /\[img=(\d+)x(\d+)\]([\s\S]*?)\[\/img\]/gi,
@@ -345,26 +417,29 @@ function bbToHTML(raw) {
   // Progress
   h = h.replace(/\[progress=(\d+)\]([\s\S]*?)\[\/progress\]/gi, (_, pct, label) => {
     const p = Math.min(100, Math.max(0, parseInt(pct)));
-    const lbl = label.trim();
-    return `<div class="bb-progress-wrap"><div class="bb-progress-bar" style="width:${p}%">${p}%${lbl ? ' — ' + lbl : ''}</div></div>`;
+    return `<div class="bb-progress-wrap"><div class="bb-progress-bar" style="width:${p}%">${p}%${label.trim() ? ' — '+label.trim() : ''}</div></div>`;
   });
 
-  // Tables — before spoilers/quotes; strip internal newlines
+  // Tables — strip internal newlines before matching
   h = rep(h, /\[table\]([\s\S]*?)\[\/table\]/gi, (_, body) => {
     let t = body.replace(/\n/g, '');
     t = t.replace(/\[tr\]([\s\S]*?)\[\/tr\]/gi, '<tr>$1</tr>');
     t = t.replace(/\[th\]([\s\S]*?)\[\/th\]/gi, '<th>$1</th>');
     t = t.replace(/\[td\]([\s\S]*?)\[\/td\]/gi, '<td>$1</td>');
-    return '<table>' + t + '</table>';
+    return '<table>'+t+'</table>';
   });
 
-  // Lists — before spoilers
+  // Lists
   h = h.replace(/\[list(?:=(\w+))?\]([\s\S]*?)\[\/list\]/gi, (_, type, items) => {
     const isOrdered = type==='1'||type==='a'||type==='i'||type==='I'||type==='A';
     const tag = isOrdered ? 'ol' : 'ul';
+    let style = '';
+    if (type === 'disc')   style = ' style="list-style-type:disc"';
+    if (type === 'circle') style = ' style="list-style-type:circle"';
+    if (type === 'square') style = ' style="list-style-type:square"';
     const typeAttr = isOrdered && type !== '1' ? ` type="${type}"` : '';
     const li = items.replace(/\[\*\] ?([\s\S]*?)(?=\[\*\]|\[\/list\]|$)/gi, '<li>$1</li>');
-    return `<${tag}${typeAttr}>${li}</${tag}>`;
+    return `<${tag}${typeAttr}${style}>${li}</${tag}>`;
   });
 
   // Quotes
@@ -374,7 +449,7 @@ function bbToHTML(raw) {
 
   // Spoilers
   h = h.replace(/\[spoiler(?:=([^\]]*))?\]([\s\S]*?)\[\/spoiler\]/gi, (_, title, content) => {
-    const lbl = title ? esc(title) : T.spoilerShow;
+    const lbl  = title ? esc(title) : T.spoilerShow;
     const hide = T.spoilerHide;
     return `<div style="margin:6px 0"><button class="bb-spoiler-btn" onclick="var b=this.nextElementSibling;b.classList.toggle('open');this.textContent=b.classList.contains('open')?'${hide}':'${lbl}'">${lbl}</button><div class="bb-spoiler-body">${content}</div></div>`;
   });
@@ -383,12 +458,16 @@ function bbToHTML(raw) {
   h = h.replace(/\[youtube\]([\s\S]*?)\[\/youtube\]/gi, (_, url) =>
     `<iframe class="bb-yt" src="https://www.youtube.com/embed/${ytId(url)}" allowfullscreen></iframe>`);
 
-  // Newlines last
+  // Newlines → <br> (last, after all block tags)
   h = h.replace(/\n/g, '<br>');
 
-  // Restore [code] blocks LAST — after all other rules, so their content is never parsed
-  h = h.replace(/\x00CODE(\d+)\x00/g, (_, idx) =>
+  // Restore [code] blocks LAST — content never parsed
+  h = h.replace(/\x01CODE(\d+)\x01/g, (_, idx) =>
     `<pre><code>${esc(codePlaceholders[parseInt(idx)])}</code></pre>`);
+
+  // Restore [noparse] blocks — shown as plain escaped text (no <pre>)
+  h = h.replace(/\x01NOPARSE(\d+)\x01/g, (_, idx) =>
+    esc(noParsePlaceholders[parseInt(idx)]));
 
   return h;
 }
